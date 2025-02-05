@@ -14,6 +14,7 @@ SOURCES += \
     gameclient.cpp \
     gameprocess.cpp \
     gameserver.cpp \
+    localhost_widget.cpp \
     main.cpp \
     mainmenu_widget.cpp \
     mainwindow_widget.cpp \
@@ -24,6 +25,7 @@ HEADERS += \
     gameclient.h \
     gameprocess.h \
     gameserver.h \
+    localhost_widget.h \
     mainmenu_widget.h \
     mainwindow_widget.h \
     signalrepeater.h

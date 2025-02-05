@@ -8,8 +8,22 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QStackedWidget>
+#include <QKeyEvent>
+
 
 class SignalRepeater;
+
+class GameModeMenuWidget : public QWidget
+{
+    Q_OBJECT
+public:
+    GameModeMenuWidget(const SignalRepeater *sr, QWidget *parent = nullptr);
+    ~GameModeMenuWidget();
+
+private:
+    QPushButton* gameVsBotButton = nullptr;
+    QPushButton* localGameButton = nullptr;
+};
 
 class MainMenuWidget : public QWidget
 {
@@ -19,15 +33,27 @@ public:
     ~MainMenuWidget();
 
 signals:
-    void gameStart();
+    void escPressed();
+
+public slots:
+    void openGameModeMenu();
+    void hideAllDropDownMenu();
+
+protected:
+    void keyPressEvent(QKeyEvent *event) override {
+        if (event->key() == Qt::Key_Escape) {
+            emit escPressed();
+        }
+    }
 
 private:
-    QStackedWidget* stackedWidget = nullptr;
+    GameModeMenuWidget* gameModeMenu = nullptr;
 
-    QPushButton* gameVsBotButton = nullptr;
-    QPushButton* localGameButton = nullptr;
-
+    QPushButton* gameButton = nullptr;
     QPushButton* aplicationCloseButton = nullptr;
 };
+
+
+
 
 #endif // MAINMENU_WIDGET_H

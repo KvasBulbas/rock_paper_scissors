@@ -8,10 +8,12 @@
 #include "signalrepeater.h"
 #include "mainmenu_widget.h"
 #include "game_widget.h"
+#include "localhost_widget.h"
 
 class SignalRepeater;
 class MainMenuWidget;
 class GameWidget;
+class LocalHostWidget;
 
 class MainWindowWidget : public QWidget
 {
@@ -29,6 +31,7 @@ private:
 
     MainMenuWidget* mainMenu = nullptr;
     GameWidget* game = nullptr;
+    LocalHostWidget* localHostMenu = nullptr;
 
     QStackedWidget* stackedWidget = nullptr;
 

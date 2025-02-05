@@ -13,14 +13,17 @@ MainWindowWidget::MainWindowWidget(QWidget *parent)
 
     sr = new SignalRepeater(this);
 
-    mainMenu = new MainMenuWidget(sr);
-    game = new GameWidget(sr);
+    mainMenu = new MainMenuWidget(sr,this);
+    game = new GameWidget(sr ,this);
+    localHostMenu = new LocalHostWidget(sr, this);
 
     stackedWidget = new QStackedWidget(this);
 
     stackedWidget->addWidget(mainMenu);
     stackedWidget->addWidget(game);
+    stackedWidget->addWidget(localHostMenu);
 
+//    stackedWidget->setCurrentIndex(1);
 
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addWidget(stackedWidget, 0, Qt::AlignCenter);

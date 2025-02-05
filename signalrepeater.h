@@ -23,6 +23,8 @@ public slots:
 
     void aplicationClose();
 
+    void openLocalhostMenu();
+
 private:
     MainWindowWidget* mainwindow = nullptr;
 

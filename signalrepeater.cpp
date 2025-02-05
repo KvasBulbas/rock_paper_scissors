@@ -22,3 +22,8 @@ void SignalRepeater::aplicationClose()
     mainwindow->close();
 }
 
+void SignalRepeater::openLocalhostMenu()
+{
+    qDebug() << "open local host menu";
+    mainwindow->setWidget(2);
+}
