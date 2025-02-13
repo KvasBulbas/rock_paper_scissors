@@ -4,11 +4,13 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QStackedWidget>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 
 #include "signalrepeater.h"
-#include "mainmenu_widget.h"
-#include "game_widget.h"
-#include "localhost_widget.h"
+//#include "mainmenu_widget.h"
+//#include "game_widget.h"
+//#include "localhost_widget.h"
 
 class SignalRepeater;
 class MainMenuWidget;
@@ -24,16 +26,20 @@ public:
     ~MainWindowWidget();
 
 public slots:
-    void setWidget(const int index);
+    void setWidget(QWidget* newSubWidget);
 
 private:
     SignalRepeater* sr = nullptr;
 
-    MainMenuWidget* mainMenu = nullptr;
-    GameWidget* game = nullptr;
-    LocalHostWidget* localHostMenu = nullptr;
+    QVBoxLayout* layout = nullptr;
 
-    QStackedWidget* stackedWidget = nullptr;
+//    MainMenuWidget* mainMenu = nullptr;
+//    GameWidget* game = nullptr;
+//    LocalHostWidget* localHostMenu = nullptr;
+
+//    QStackedWidget* stackedWidget = nullptr;
+
+    QWidget* subwidget = nullptr;
 
 
 };

@@ -25,7 +25,7 @@ GameModeMenuWidget::~GameModeMenuWidget(){
 MainMenuWidget::MainMenuWidget(const SignalRepeater *sr, QWidget *parent)
     : QWidget(parent)
 {
-    qDebug() << "Main menu open";
+//    qDebug() << "Main menu open";
 
     gameButton = new QPushButton("Играть", this);
     aplicationCloseButton = new QPushButton("Выйти на рабочий стол", this);
@@ -45,6 +45,7 @@ MainMenuWidget::MainMenuWidget(const SignalRepeater *sr, QWidget *parent)
     connect(gameButton, QPushButton::clicked, this, MainMenuWidget::openGameModeMenu);
     connect(aplicationCloseButton, QPushButton::clicked, sr, SignalRepeater::aplicationClose);
     connect(this, MainMenuWidget::escPressed, this, MainMenuWidget::hideAllDropDownMenu);
+//    qDebug() <<'asd';
 }
 
 void MainMenuWidget::openGameModeMenu()

@@ -5,6 +5,7 @@
 
 #include <QWidget>
 #include <QPushButton>
+#include <QLabel>
 
 #include "signalrepeater.h"
 
@@ -14,8 +15,11 @@ class GameWidget : public QWidget
 {
     Q_OBJECT
 public:
-    GameWidget(const SignalRepeater* sr,QWidget *parent = nullptr);
+    GameWidget(SignalRepeater* sr,QWidget *parent = nullptr);
     ~GameWidget();
+
+public slots:
+    void showMessage();
 
 private:
     QPushButton* exitToMenuButton = nullptr;
@@ -23,6 +27,11 @@ private:
     QPushButton* rockButton = nullptr;
     QPushButton* scissorsButton = nullptr;
     QPushButton* paperButton = nullptr;
+
+    QLabel* firstPlayerReady = nullptr;
+    QLabel* secondPlayerReady = nullptr;
+
+    ServerManager* serverManager = nullptr;
 
 };
 

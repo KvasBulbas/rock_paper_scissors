@@ -18,6 +18,7 @@ SOURCES += \
     main.cpp \
     mainmenu_widget.cpp \
     mainwindow_widget.cpp \
+    servermanager.cpp \
     signalrepeater.cpp
 
 HEADERS += \
@@ -28,6 +29,7 @@ HEADERS += \
     localhost_widget.h \
     mainmenu_widget.h \
     mainwindow_widget.h \
+    servermanager.h \
     signalrepeater.h
 
 # Default rules for deployment.

@@ -31,7 +31,8 @@ public:
     }
 
 private:
-
+    int firstPlayerChoice;
+    int secondPlayerChoice;
 
 };
 
