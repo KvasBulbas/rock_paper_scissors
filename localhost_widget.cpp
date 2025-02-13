@@ -37,7 +37,6 @@ LocalHostWidget::LocalHostWidget(SignalRepeater *sr, QWidget *parent): QWidget(p
     connect(createLobbyButton, QPushButton::clicked, this, LocalHostWidget::createLobby);
     connect(connectButton , QPushButton::clicked, this, LocalHostWidget::clientConnect);
 
-
     connect(exitToMenuButton, QPushButton::clicked, this, LocalHostWidget::baseStateReturn);
     connect(this, LocalHostWidget::escPressed, this, LocalHostWidget::baseStateReturn);
 }

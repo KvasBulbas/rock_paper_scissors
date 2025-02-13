@@ -38,7 +38,9 @@ public:
     }
 
 signals:
+    void clientDisconnect();
     void serverIsReady();
+    void clientChoiceIsAccepted(int clientChoice);
 
 private slots:
     void onNewConnection() {
@@ -46,25 +48,29 @@ private slots:
         qDebug() << "New connection:" << clientSocket->peerAddress().toString();
 
           connect(clientSocket, &QTcpSocket::readyRead, [this,clientSocket]() {
-              QByteArray data = clientSocket->readAll();
-//              qDebug() << "Сообщение от клиента:" << data;
-//              clientSocket->write("soobshenie polucheno: " + data);
 
-              if(data.startsWith("game:"))
-              {
-                  clientChoice = data.mid(5).toInt(); // Число от клиента
-                  qDebug() << "Число клиента:" << clientChoice;
 
-                  if(serverChoice != -1)
-                    getResult();
-              }
+                QByteArray data = clientSocket->readAll();
+
+//            qDebug() << data;
+                if(data.startsWith("game:"))
+                {
+                    clientChoice = data.mid(5).toInt(); // Число от клиента
+                    emit clientChoiceIsAccepted(clientChoice);
+                }
+
+                if(data.startsWith("result:"))
+                {
+
+                }
 
 
           });
 
-        connect(clientSocket, &QTcpSocket::disconnected, [clientSocket]() {
-            qDebug() << "Клиент отключился:" << clientSocket->peerAddress().toString();
-                                                                    clientSocket->deleteLater();
+        connect(clientSocket, &QTcpSocket::disconnected, [this, clientSocket]() {
+              qDebug() << "Client disconnect:"; /*<< clientSocket->peerAddress().toString();
+                                                                    clientSocket->deleteLater();*/
+              emit clientDisconnect();
         });
 
         emit serverIsReady();
@@ -128,7 +134,7 @@ public:
 
 signals:
     void clientIsReady();
-
+    void serverCloseForClient();
 
 private slots:
     void onConnected() {
@@ -142,7 +148,9 @@ private slots:
     }
 
     void onDisconnected() {
-        qDebug() << "Отключено от сервера.";
+        qDebug() << "Server close";
+        emit serverCloseForClient();
+
     }
 
 private:

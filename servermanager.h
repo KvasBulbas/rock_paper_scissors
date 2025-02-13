@@ -1,8 +1,6 @@
 #ifndef SERVERMANAGER_H
 #define SERVERMANAGER_H
 
-
-
 #include "gameserver.h"
 #include <QObject>
 
@@ -24,6 +22,10 @@ public slots:
 
 signals:
     void connectionIsOk();
+    void clientDisconnectFromServer();
+    void serverCloseForClient();
+    void clientChoiceIsAccepted(int clientChoice);
+    void serverChoiceIsAccepted(int serverChoice);
 
 private:
     Server* server = nullptr;

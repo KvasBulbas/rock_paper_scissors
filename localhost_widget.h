@@ -2,7 +2,6 @@
 #define LOCALHOSTWIDGET_H
 
 #include "signalrepeater.h"
-#include "servermanager.h"
 //#include "gameclient.h"
 
 #include <QWidget>
@@ -12,8 +11,6 @@
 #include <QKeyEvent>
 
 class SignalRepeater;
-class Server;
-class Client;
 
 class LocalHostWidget : public QWidget
 {
@@ -46,11 +43,7 @@ private:
     QLabel* createLobbyMesage = nullptr;
     QLabel* connectionMesage = nullptr;
 
-
-
-
-    ServerManager* serverManager;
-
+    ServerManager* serverManager = nullptr;
 };
 
 #endif // LOCALHOSTWIDGET_H

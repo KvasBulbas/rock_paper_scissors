@@ -9,11 +9,12 @@
 
 #include <QObject>
 
-class ServerManager;
+//class ServerManager;
+//class MainMenuWidget;
+//class GameWidget;
+//class LocalHostWidget;
+
 class MainWindowWidget;
-class MainMenuWidget;
-class GameWidget;
-class LocalHostWidget;
 
 class SignalRepeater : public QObject
 {

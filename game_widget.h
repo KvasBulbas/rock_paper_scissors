@@ -8,6 +8,7 @@
 #include <QLabel>
 
 #include "signalrepeater.h"
+#include "gameprocess.h"
 
 class SignalRepeater;
 
@@ -19,7 +20,12 @@ public:
     ~GameWidget();
 
 public slots:
-    void showMessage();
+    void clientDisconnectMessage();
+    void serverDisconnectMessage();
+    void waitEnemyMessage();
+    void enemyWaitingMessage();
+
+    void baseStateReturn();
 
 private:
     QPushButton* exitToMenuButton = nullptr;
@@ -31,7 +37,12 @@ private:
     QLabel* firstPlayerReady = nullptr;
     QLabel* secondPlayerReady = nullptr;
 
+    QLabel* clientDisconnect = nullptr;
+    QLabel* serverDiconnect= nullptr;
+
     ServerManager* serverManager = nullptr;
+
+    GameProcess* gameProcess = nullptr;
 
 };
 

@@ -13,9 +13,6 @@
 //#include "localhost_widget.h"
 
 class SignalRepeater;
-class MainMenuWidget;
-class GameWidget;
-class LocalHostWidget;
 
 class MainWindowWidget : public QWidget
 {
@@ -33,14 +30,6 @@ private:
 
     QVBoxLayout* layout = nullptr;
 
-//    MainMenuWidget* mainMenu = nullptr;
-//    GameWidget* game = nullptr;
-//    LocalHostWidget* localHostMenu = nullptr;
-
-//    QStackedWidget* stackedWidget = nullptr;
-
     QWidget* subwidget = nullptr;
-
-
 };
 #endif // MAINWINDOW_WIDGET_H
