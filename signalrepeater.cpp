@@ -34,7 +34,6 @@ void SignalRepeater::openLocalhostMenu()
 }
 
 
-
 void SignalRepeater::aplicationClose() const
 {
     qDebug() << "aplication close";

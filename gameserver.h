@@ -14,28 +14,10 @@ class Server : public QTcpServer {
     Q_OBJECT
 
 public:
-    Server(QObject *parent = nullptr) : QTcpServer(parent) {
-        connect(this, &QTcpServer::newConnection, this, &Server::onNewConnection);
-    }
+    Server(QObject *parent = nullptr);
 
-    void startServer(quint16 port) {
-        if (this->listen(QHostAddress::Any, port)) {
-            qDebug() << "Start server" << port;
-        } else {
-            qDebug() << "Start server: error" << this->errorString();
-        }
-    }
-
-
-    void setServerChoice(int choice)
-    {
-        if(0 <= choice && choice <=2)
-            serverChoice = choice;
-
-        if(clientChoice != -1)
-            getResult();
-
-    }
+    void startServer(quint16 port) ;
+    void sendMessageToClient(const QString &message);
 
 signals:
     void clientDisconnect();
@@ -43,57 +25,11 @@ signals:
     void clientChoiceIsAccepted(int clientChoice);
 
 private slots:
-    void onNewConnection() {
-        QTcpSocket *clientSocket = this->nextPendingConnection();
-        qDebug() << "New connection:" << clientSocket->peerAddress().toString();
-
-          connect(clientSocket, &QTcpSocket::readyRead, [this,clientSocket]() {
-
-
-                QByteArray data = clientSocket->readAll();
-
-//            qDebug() << data;
-                if(data.startsWith("game:"))
-                {
-                    clientChoice = data.mid(5).toInt(); // Число от клиента
-                    emit clientChoiceIsAccepted(clientChoice);
-                }
-
-                if(data.startsWith("result:"))
-                {
-
-                }
-
-
-          });
-
-        connect(clientSocket, &QTcpSocket::disconnected, [this, clientSocket]() {
-              qDebug() << "Client disconnect:"; /*<< clientSocket->peerAddress().toString();
-                                                                    clientSocket->deleteLater();*/
-              emit clientDisconnect();
-        });
-
-        emit serverIsReady();
-    }
-
-
-
-
-
-
-    void getResult()
-    {
-        qDebug() << "SC: " << serverChoice << " CC: " << clientChoice;
-    }
-//    void sendMessage(const QString &message)
-//    {
-//        QTcpSocket *clientSocket = this->nextPendingConnection();
-//        clientSocket->write()
-//    }
+    void onNewConnection();
 
 private:
-    int serverChoice = -1;
-    int clientChoice = -1;
+    QTcpSocket* clientSocket = nullptr;
+
 };
 
 // Клиент
@@ -128,6 +64,7 @@ public:
     bool checkConnection()
     {
 
+
         return (socket.state() == QAbstractSocket::ConnectedState);
     }
 
@@ -135,6 +72,8 @@ public:
 signals:
     void clientIsReady();
     void serverCloseForClient();
+    void serverChoiceIsAccepted(int clientChoice);
+    void serverSendResult(int result);
 
 private slots:
     void onConnected() {
@@ -144,7 +83,31 @@ private slots:
 
     void onReadyRead() {
         QByteArray data = socket.readAll();
-        qDebug() << "Сообщение от сервера:" << data;
+
+
+
+
+        if(data.startsWith("game:"))
+        {
+            int serverChoice = data.mid(5).toInt();
+
+//            qDebug() << "server choice: " << serverChoice;
+
+            emit serverChoiceIsAccepted(serverChoice);
+        }
+
+        if(data.startsWith("result:"))
+        {
+            int result = data.mid(7).toInt();
+            switch (result) {
+            case 0:
+                result = 2;
+                break;
+            case 2:
+                result = 0;
+            }
+            emit serverSendResult(result);
+        }
     }
 
     void onDisconnected() {

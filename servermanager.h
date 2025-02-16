@@ -18,7 +18,10 @@ public slots:
 
     void createConnection();
     void closeConnection();
-    void sendChoice(int choice);
+    void sendMessage(QString message);
+//    void sendResult(QString result);
+
+
 
 signals:
     void connectionIsOk();
@@ -26,6 +29,8 @@ signals:
     void serverCloseForClient();
     void clientChoiceIsAccepted(int clientChoice);
     void serverChoiceIsAccepted(int serverChoice);
+    void localChoiceIsAccepted(int localChoice);
+    void resultIsAccepted(int result);
 
 private:
     Server* server = nullptr;

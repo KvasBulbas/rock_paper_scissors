@@ -17,13 +17,17 @@ signals:
     void stoneChoosing();
     void scissorsChoosing();
     void paperChoosing();
+    void resultReady(QString resultMessage);
 
+public slots:
+    void setServerChoice(int choice);
+    void setClientChoice(int choice);
 
 private:
     enum Outcomes{
-        win_first = 1,
-        win_second = -1,
-        draw = 0,
+        server_win = 2,
+        draw = 1,
+        client_win = 0,
     };
 
     enum Choices{
@@ -35,12 +39,11 @@ private:
 
     void game();
 
-    int firstPlayerChoice = none;
-    int secondPlayerChoice = none;
+    int serverPlayerChoice = none;
+    int clientPlayerChoice = none;
+    int serverScore;
+    int clientScore;
 
-public slots:
-    void setFirstPlayerChoice(int choice);
-    void setSecondPlayerChoice(int choice);
 
 };
 

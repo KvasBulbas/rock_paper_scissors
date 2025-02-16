@@ -46,6 +46,8 @@ void ServerManager::createConnection()
         client = new Client;
         connect(client, Client::clientIsReady, this, ServerManager::connectionIsOk);
         connect(client, Client::serverCloseForClient, this,  ServerManager::serverCloseForClient);
+        connect(client, Client::serverSendResult, this, ServerManager::resultIsAccepted);
+        connect(client, Client::serverChoiceIsAccepted, this, ServerManager::serverChoiceIsAccepted);
         client->connectToServer("127.0.0.1", 1234);
     }
 }
@@ -63,23 +65,36 @@ void ServerManager::closeConnection()
 }
 
 
-void ServerManager::sendChoice(int choice)
+void ServerManager::sendMessage(QString message)
 {
 //    qDebug() << choice;
+
     if(client)
     {
-        QString message = QString("game:").arg(choice);
-        qDebug() << message;
         client->sendMessage(message);
-//        QTimer::singleShot(2000, [this]() {
-//            client->sendMessage("");
-//        });
     }
 
     if(server)
     {
 
-        emit serverChoiceIsAccepted(choice);
+        if(message.startsWith("game:"))
+        {
+            int serverChoice = message.mid(5).toInt();
+            emit localChoiceIsAccepted(serverChoice);
+        }
+
+        if(message.startsWith("result:"))
+        {
+            int result = message.mid(7).toInt();
+//            qDebug() << "send message: result" << message;
+            emit resultIsAccepted(result);
+        }
+
+        server->sendMessageToClient(message);
     }
+
+
+
 }
+
 

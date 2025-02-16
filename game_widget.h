@@ -6,6 +6,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QLabel>
+#include <QStackedWidget>
 
 #include "signalrepeater.h"
 #include "gameprocess.h"
@@ -23,9 +24,11 @@ public slots:
     void clientDisconnectMessage();
     void serverDisconnectMessage();
     void waitEnemyMessage();
-    void enemyWaitingMessage();
+    void enemyWaitingMessage(int choice);
 
     void baseStateReturn();
+
+    void setResult(int result);
 
 private:
     QPushButton* exitToMenuButton = nullptr;
@@ -43,6 +46,16 @@ private:
     ServerManager* serverManager = nullptr;
 
     GameProcess* gameProcess = nullptr;
+
+
+    QLabel* youWin = nullptr;
+    QLabel* youLose = nullptr;
+    QLabel* draw = nullptr;
+
+    QStackedWidget* resultWidget = nullptr;
+
+
+
 
 };
 
