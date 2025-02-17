@@ -5,40 +5,35 @@
 #include <QTcpSocket>
 #include <QDebug>
 
-class GameClient : public QObject {
+class Client : public QObject {
     Q_OBJECT
+
 public:
-    GameClient(QObject* parent = nullptr) : QObject(parent) {
-        socket = new QTcpSocket(this);
+    Client(QObject *parent = nullptr);
+    void connectToServer(const QString &host, quint16 port);
 
-        connect(socket, &QTcpSocket::readyRead, this, [this]() {
-            QByteArray data = socket->readAll();
-            qDebug() << "Received from server:" << data;
-        });
+    void disconnectFromServer();
 
-        connect(socket, &QTcpSocket::connected, this, []() {
-            qDebug() << "Connected to server!";
-        });
+    void sendMessage(const QString &message);
 
-        connect(socket, &QTcpSocket::disconnected, this, []() {
-            qDebug() << "Disconnected from server!";
-        });
-    }
+    bool checkConnection();
 
-    void connectToServer(const QString& host, quint16 port) {
-        socket->connectToHost(host, port);
-    }
 
-    void sendData(const QString& data) {
-        if (socket->state() == QAbstractSocket::ConnectedState) {
-            socket->write(data.toUtf8());
-        } else {
-            qDebug() << "Not connected to server!";
-        }
-    }
+signals:
+    void clientIsReady();
+    void serverCloseForClient();
+    void serverChoiceIsAccepted(int clientChoice);
+    void serverSendResult(int result);
+
+private slots:
+    void onConnected();
+
+    void onReadyRead();
+
+    void onDisconnected();
 
 private:
-    QTcpSocket* socket;
+    QTcpSocket socket;
 };
 
 #endif // GAMECLIENT_H

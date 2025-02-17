@@ -1,4 +1,4 @@
-#include "gameprocess.h"
+    #include "gameprocess.h"
 
 GameProcess::GameProcess(ServerManager* serverManager)
 {
@@ -16,9 +16,12 @@ GameProcess::GameProcess(ServerManager* serverManager)
 
 
     connect(this, GameProcess::resultReady, serverManager, ServerManager::sendMessage);
-
     connect(serverManager, ServerManager::localChoiceIsAccepted, this, setServerChoice);
     connect(serverManager, ServerManager::clientChoiceIsAccepted, this, setClientChoice);
+
+
+
+
 
 }
 
@@ -50,75 +53,75 @@ void GameProcess::game()
 
     if(serverPlayerChoice != none && clientPlayerChoice != none )
     {
-        qDebug() << serverPlayerChoice;
-        qDebug() << clientPlayerChoice;
+//        qDebug() << serverPlayerChoice;
+//        qDebug() << clientPlayerChoice;
 
         if(serverPlayerChoice == stone && clientPlayerChoice == scissors )
         {
             result = server_win;
-            qDebug() <<  "server win";
+//            qDebug() <<  "server win";
         }
 
 
         if(serverPlayerChoice == stone && clientPlayerChoice == paper )
         {
             result = client_win;
-            qDebug() <<  "client win";
+//            qDebug() <<  "client win";
         }
 
 
         if(serverPlayerChoice == stone && clientPlayerChoice == stone )
         {
             result = draw;
-            qDebug() <<  "draw";
+//            qDebug() <<  "draw";
 
         }
 
         if(serverPlayerChoice == scissors && clientPlayerChoice == scissors )
         {
             result = draw;
-            qDebug() <<  "draw";
+//            qDebug() <<  "draw";
         }
 
 
         if(serverPlayerChoice == scissors && clientPlayerChoice == stone )
         {
             result = client_win;
-            qDebug() <<  "client win";
+//            qDebug() <<  "client win";
         }
 
 
         if(serverPlayerChoice == scissors && clientPlayerChoice == paper )
         {
             result = server_win;
-            qDebug() <<  "server win";
+//            qDebug() <<  "server win";
         }
 
 
         if(serverPlayerChoice == paper && clientPlayerChoice == paper )
         {
             result = draw;
-            qDebug() <<  "draw";
+//            qDebug() <<  "draw";
         }
 
 
         if(serverPlayerChoice == paper && clientPlayerChoice == stone )
         {
             result = server_win;
-            qDebug() <<  "server win";
+//            qDebug() <<  "server win";
         }
 
         if(serverPlayerChoice == paper && clientPlayerChoice == scissors )
         {
             result = client_win;
-            qDebug() <<  "client win";
+//            qDebug() <<  "client win";
         }
 
 
         serverPlayerChoice = none;
         clientPlayerChoice = none;
 
-
+//        qDebug() << "game result: " << result;
 
 
         emit resultReady(QString("result:") + QString::number(result));

@@ -2,8 +2,10 @@
 #define SERVERMANAGER_H
 
 #include "gameserver.h"
+#include "gameclient.h"
 #include <QObject>
 
+//class Client;
 class ServerManager : public QObject
 {
     Q_OBJECT

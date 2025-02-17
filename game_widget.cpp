@@ -58,23 +58,28 @@ GameWidget::GameWidget(SignalRepeater* sr,QWidget *parent)
 
     connect(serverManager, ServerManager::clientDisconnectFromServer, this, GameWidget::clientDisconnectMessage);
     connect(serverManager, ServerManager::serverCloseForClient, this, GameWidget::serverDisconnectMessage);
+
+
+
     connect(serverManager, ServerManager::clientChoiceIsAccepted, this, GameWidget::enemyWaitingMessage);
     connect(serverManager, ServerManager::serverChoiceIsAccepted, this, GameWidget::enemyWaitingMessage);
     connect(serverManager, ServerManager::resultIsAccepted, this, GameWidget::setResult);
 
+
     connect(exitToMenuButton,QPushButton::clicked, serverManager, ServerManager::closeServer);
     connect(exitToMenuButton,QPushButton::clicked, serverManager, ServerManager::closeConnection);
 
-
     gameProcess =  new GameProcess(serverManager);
+
+    connect(rockButton, QPushButton::clicked, this, GameWidget::waitEnemyMessage);
+    connect(scissorsButton, QPushButton::clicked, this, GameWidget::waitEnemyMessage);
+    connect(paperButton, QPushButton::clicked, this, GameWidget::waitEnemyMessage);
+
 
     connect(rockButton, QPushButton::clicked, gameProcess, GameProcess::stoneChoosing);
     connect(scissorsButton, QPushButton::clicked, gameProcess, GameProcess::scissorsChoosing);
     connect(paperButton, QPushButton::clicked, gameProcess, GameProcess::paperChoosing);
 
-    connect(rockButton, QPushButton::clicked, this, GameWidget::waitEnemyMessage);
-    connect(scissorsButton, QPushButton::clicked, this, GameWidget::waitEnemyMessage);
-    connect(paperButton, QPushButton::clicked, this, GameWidget::waitEnemyMessage);
 
 
 
@@ -100,14 +105,17 @@ void GameWidget::serverDisconnectMessage()
 
 void GameWidget::waitEnemyMessage()
 {
-    firstPlayerReady->show();
+    if(!reslutOk)
+        firstPlayerReady->show();
+//    qDebug() << "wait enemy";
 }
 
 void GameWidget::enemyWaitingMessage(int choice)
 {
     Q_UNUSED(choice);
-    secondPlayerReady->show();
-    qDebug() << "wait enemy";
+    if(!reslutOk)
+        secondPlayerReady->show();
+//    qDebug() << "enemywait ";
 }
 
 void GameWidget::baseStateReturn()
@@ -122,11 +130,16 @@ void GameWidget::baseStateReturn()
     rockButton->setEnabled(true);
     scissorsButton->setEnabled(true);
     paperButton->setEnabled(true);
+    reslutOk = false;
 }
 
 void GameWidget::setResult(int result)
 {
+//    qDebug() << "set result ";
+
     baseStateReturn();
+
+    reslutOk = true;
     resultWidget->setCurrentIndex(result);
     resultWidget->show();
 

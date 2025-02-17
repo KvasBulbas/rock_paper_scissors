@@ -7,13 +7,13 @@
 LocalHostWidget::LocalHostWidget(SignalRepeater *sr, QWidget *parent): QWidget(parent)
 {
     createLobbyButton = new QPushButton("Создать лобби",this);
-    findLobbyButton = new QPushButton("Найти лобби",this);
+//    findLobbyButton = new QPushButton("Найти лобби",this);
     connectButton = new QPushButton("Подключиться напрямую",this);
     exitToMenuButton = new QPushButton("Выйти в главное меню",this);
 
     QVBoxLayout* vbox = new QVBoxLayout();
     vbox->addWidget(createLobbyButton);
-    vbox->addWidget(findLobbyButton);
+//    vbox->addWidget(findLobbyButton);
     vbox->addWidget(connectButton);
     vbox->addWidget(exitToMenuButton);
 
@@ -45,7 +45,7 @@ void LocalHostWidget::createLobby()
 {
     serverManager->createServer();
     createLobbyMesage->show();
-    findLobbyButton->setEnabled(false);
+//    findLobbyButton->setEnabled(false);
     connectButton->setEnabled(false);
 }
 
@@ -58,7 +58,7 @@ void LocalHostWidget::clientConnect()
 
 void LocalHostWidget::baseStateReturn()
 {
-    findLobbyButton->setEnabled(true);
+//    findLobbyButton->setEnabled(true);
     connectButton->setEnabled(true);
     createLobbyButton->setEnabled(true);
     createLobbyMesage->hide();

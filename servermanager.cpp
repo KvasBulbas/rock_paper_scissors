@@ -2,6 +2,7 @@
 
 #include <QTimer>
 #include <QDebug>
+#include <Qthread>
 
 ServerManager::ServerManager()
 {
@@ -46,8 +47,9 @@ void ServerManager::createConnection()
         client = new Client;
         connect(client, Client::clientIsReady, this, ServerManager::connectionIsOk);
         connect(client, Client::serverCloseForClient, this,  ServerManager::serverCloseForClient);
-        connect(client, Client::serverSendResult, this, ServerManager::resultIsAccepted);
         connect(client, Client::serverChoiceIsAccepted, this, ServerManager::serverChoiceIsAccepted);
+        connect(client, Client::serverSendResult, this, ServerManager::resultIsAccepted);
+
         client->connectToServer("127.0.0.1", 1234);
     }
 }
@@ -77,20 +79,29 @@ void ServerManager::sendMessage(QString message)
     if(server)
     {
 
+
+        qDebug() << "server manager send message1: " << message;
         if(message.startsWith("game:"))
         {
             int serverChoice = message.mid(5).toInt();
             emit localChoiceIsAccepted(serverChoice);
+
         }
 
         if(message.startsWith("result:"))
         {
             int result = message.mid(7).toInt();
-//            qDebug() << "send message: result" << message;
+
             emit resultIsAccepted(result);
+//                       QThread::msleep(50); // Задержка 10 мс (можно увеличить)
+
         }
 
+
+
+        qDebug() << "server manager send message2: " << message;
         server->sendMessageToClient(message);
+
     }
 
 

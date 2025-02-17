@@ -1,8 +1,11 @@
 #include "gameserver.h"
+#include <QCoreApplication>
 
 Server::Server(QObject *parent) : QTcpServer(parent)
     {
         connect(this, &QTcpServer::newConnection, this, &Server::onNewConnection);
+//        this->setSocketOption(QAbstractSocket::LowDelayOption, 1);
+
     }
 
 void Server::startServer(quint16 port) {
@@ -19,8 +22,12 @@ void Server::startServer(quint16 port) {
 void Server::sendMessageToClient(const QString &message)
 {
     if (clientSocket && clientSocket->state() == QAbstractSocket::ConnectedState)
+    {
+//        qDebug() << "server send message: " << message;
         clientSocket->write(message.toUtf8());
-
+        clientSocket->flush();
+        QCoreApplication::processEvents();
+    }
 }
 
 

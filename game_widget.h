@@ -55,6 +55,8 @@ private:
     QStackedWidget* resultWidget = nullptr;
 
 
+    bool reslutOk = false;
+
 
 
 };
