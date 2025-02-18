@@ -9,44 +9,33 @@
 
 #include <QObject>
 
-//class ServerManager;
-//class MainMenuWidget;
-//class GameWidget;
-//class LocalHostWidget;
-
 class MainWindowWidget;
 
-class SignalRepeater : public QObject
+/*Класс aplication manager осуществеляет управление всем приложением. С помощью него происходит взаимодействие
+между виджетам, а также он хранит объяект ServerManager, который осуществляет управление сетевой составляющей
+приложения. В случае необходимости этот класс может предоствить указателель на ServerManager*/
+class AplicationManager : public QObject
 {
     Q_OBJECT
 public:
-    SignalRepeater(MainWindowWidget* mainwindow);
-    ~SignalRepeater();
-
-signals:
+    AplicationManager(MainWindowWidget* mainwindow);
+    ~AplicationManager();
 
 public slots:
     void gameStart();
 
-    void exitToMenu() const;
+    void exitToMenu();
 
-    void aplicationClose() const;
+    void aplicationClose();
 
     void openLocalhostMenu();
 
     ServerManager* getServerManager();
 
-//    void setServerManager(const ServerManager* sm);
-
 private:
     MainWindowWidget* mainwindow = nullptr;
 
     ServerManager* serverManager = nullptr;
-
-
-
-
-
 };
 
 #endif // SIGNALREPEATER_H

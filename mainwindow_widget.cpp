@@ -5,30 +5,28 @@
 MainWindowWidget::MainWindowWidget(QWidget *parent)
     : QWidget(parent)
 {
-    sr = new SignalRepeater(this);
+    aplicationManager = new AplicationManager(this);
     layout = new QVBoxLayout(this);
 
-    sr->exitToMenu();
+    aplicationManager->exitToMenu();//задаем изначальное окно ввиде окна главного меню
 }
 
 MainWindowWidget::~MainWindowWidget()
 {
-    delete sr;
+    delete aplicationManager;
     if(subwidget)
         delete subwidget;
 }
 
-void MainWindowWidget::setWidget(QWidget* newSubWidget)
+void MainWindowWidget::setWidget(QWidget* newSubWidget)//метод смены виджета
 {
-//    qDebug() << "setWidget";
-
-    if(subwidget)
+    if(subwidget)//виджет удаляется из layout, а также освобождается память из под указателя на этот виджет
     {
         layout->removeWidget(subwidget);
         delete subwidget;
-        qDebug() << "deleteWidget";
     }
 
+    //присвоение указателю адреса нового виджета, а также помощение его в layot
     subwidget = newSubWidget;
     layout->addWidget(subwidget);
 }

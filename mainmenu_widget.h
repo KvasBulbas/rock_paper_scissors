@@ -11,13 +11,15 @@
 #include <QKeyEvent>
 
 
-class SignalRepeater;
 
+class AplicationManager;
+
+//Меню выбора режима игры. Можно зыкрать нажав esc
 class GameModeMenuWidget : public QWidget
 {
     Q_OBJECT
 public:
-    GameModeMenuWidget(const SignalRepeater *sr, QWidget *parent = nullptr);
+    GameModeMenuWidget(const AplicationManager *sr, QWidget *parent = nullptr);
     ~GameModeMenuWidget();
 
 private:
@@ -25,25 +27,29 @@ private:
     QPushButton* localGameButton = nullptr;
 };
 
+
+/*Класс виджета главного меню. Предостваляет интрефейс главного меню с кнопками. Взаимодействуйет с остальным приложением
+через AplicationManager. С помощью этого класса можно запустить игру с ботом, или открыть меню подлкючения, или
+закрыть приложение. Также хранит в себе меню вылезающее меню в выбыром режима игры*/
 class MainMenuWidget : public QWidget
 {
     Q_OBJECT
 public:
-    MainMenuWidget(const SignalRepeater* sr, QWidget *parent = nullptr);
+    MainMenuWidget(const AplicationManager* sr, QWidget *parent = nullptr);
     ~MainMenuWidget();
 
 signals:
-    void escPressed();
+    void escPressed();//сигнал вызывающийся при нажатии esc
 
 public slots:
     void openGameModeMenu();
     void hideAllDropDownMenu();
 
 protected:
-    void keyPressEvent(QKeyEvent *event) override {
-        if (event->key() == Qt::Key_Escape) {
+    void keyPressEvent(QKeyEvent *event) override//перегруженый метод из QWidget, позволящий регситрировать нажатие esc
+    {
+        if (event->key() == Qt::Key_Escape)
             emit escPressed();
-        }
     }
 
 private:

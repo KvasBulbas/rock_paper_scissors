@@ -2,17 +2,14 @@
 #define MAINWINDOW_WIDGET_H
 
 #include <QWidget>
-#include <QPushButton>
-#include <QStackedWidget>
 #include <QVBoxLayout>
-#include <QHBoxLayout>
 
 #include "signalrepeater.h"
-//#include "mainmenu_widget.h"
-//#include "game_widget.h"
-//#include "localhost_widget.h"
 
-class SignalRepeater;
+class AplicationManager;
+
+//Класс главного окна. Является главным виджетом, через который запускается приложение, а также отображает остальные
+//виджеты, смена которых происходит с помощью класса Aplication manager
 
 class MainWindowWidget : public QWidget
 {
@@ -26,7 +23,7 @@ public slots:
     void setWidget(QWidget* newSubWidget);
 
 private:
-    SignalRepeater* sr = nullptr;
+    AplicationManager* aplicationManager = nullptr;
 
     QVBoxLayout* layout = nullptr;
 

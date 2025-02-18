@@ -9,7 +9,7 @@
 //    int randomNumber = QRandomGenerator::global()->bounded(2);
 //}
 
-GameWidget::GameWidget(SignalRepeater* sr,QWidget *parent)
+GameWidget::GameWidget(AplicationManager* sr,QWidget *parent)
     : QWidget(parent)
 {
     rockButton = new QPushButton("Камень",this);
@@ -84,18 +84,23 @@ GameWidget::GameWidget(SignalRepeater* sr,QWidget *parent)
 
 
 
-    connect(exitToMenuButton, QPushButton::clicked, sr, SignalRepeater::exitToMenu);
+    connect(exitToMenuButton, QPushButton::clicked, sr, AplicationManager::exitToMenu);
 
     baseStateReturn();
 }
 
 void GameWidget::clientDisconnectMessage()
 {
+    baseStateReturn();
+    rockButton->setEnabled(false);
+    scissorsButton->setEnabled(false);
+    paperButton->setEnabled(false);
     clientDisconnect->show();
 }
 
 void GameWidget::serverDisconnectMessage()
 {
+    baseStateReturn();
     rockButton->setEnabled(false);
     scissorsButton->setEnabled(false);
     paperButton->setEnabled(false);
@@ -130,6 +135,7 @@ void GameWidget::baseStateReturn()
     rockButton->setEnabled(true);
     scissorsButton->setEnabled(true);
     paperButton->setEnabled(true);
+    exitToMenuButton->setEnabled(true);
     reslutOk = false;
 }
 
@@ -147,8 +153,9 @@ void GameWidget::setResult(int result)
     rockButton->setEnabled(false);
     scissorsButton->setEnabled(false);
     paperButton->setEnabled(false);
+    exitToMenuButton->setEnabled(false);
 
-    QTimer::singleShot(3000, [this]() {
+    QTimer::singleShot(1800, [this]() {
         baseStateReturn();
     });
 }

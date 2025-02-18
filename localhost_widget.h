@@ -9,29 +9,55 @@
 #include <QLabel>
 #include <QTcpSocket>
 #include <QKeyEvent>
+#include <QLineEdit>
 
-class SignalRepeater;
+
+class AplicationManager;
+
+class AdressLineEdit : public QWidget
+{
+    Q_OBJECT
+public:
+    AdressLineEdit(AplicationManager *aplicationManager, QWidget *parent = nullptr);
+
+public slots:
+    void enterServerName();
+
+private:
+    QLineEdit* hostLineEdit = nullptr;
+    QLineEdit* portLineEdit = nullptr;
+    QLabel* colon = nullptr;
+
+    ServerManager* serverManager = nullptr;
+};
+
+
 
 class LocalHostWidget : public QWidget
 {
     Q_OBJECT
 public:
-    LocalHostWidget(SignalRepeater *sr, QWidget *parent = nullptr);
+    LocalHostWidget(AplicationManager *aplicationManager, QWidget *parent = nullptr);
     ~LocalHostWidget();
 
 signals:
     void escPressed();
+     void enterPressed();
 
 public slots:
     void createLobby();
-    void clientConnect();
+    void showAdressLineEdit();
     void baseStateReturn();
+    void clientConnect();
 
 protected:
-    void keyPressEvent(QKeyEvent *event) override {
-        if (event->key() == Qt::Key_Escape) {
+    void keyPressEvent(QKeyEvent *event) override
+    {
+        if (event->key() == Qt::Key_Escape)
             emit escPressed();
-        }
+
+        if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
+            emit enterPressed();
     }
 
 private:
@@ -43,7 +69,10 @@ private:
     QLabel* createLobbyMesage = nullptr;
     QLabel* connectionMesage = nullptr;
 
+    AdressLineEdit* adressLineEdit = nullptr;
+
     ServerManager* serverManager = nullptr;
+
 };
 
 #endif // LOCALHOSTWIDGET_H

@@ -1,53 +1,42 @@
 #include "signalrepeater.h"
 #include <QDebug>
 
-//#include <mainmenu_widget.h>
-SignalRepeater::SignalRepeater(MainWindowWidget *mainwindow):mainwindow(mainwindow){
+AplicationManager::AplicationManager(MainWindowWidget *mainwindow):mainwindow(mainwindow){
 
     serverManager = new ServerManager;
 }
 
-SignalRepeater::~SignalRepeater()
+AplicationManager::~AplicationManager()
 {
     delete serverManager;
 }
 
-void SignalRepeater::gameStart()
+void AplicationManager::gameStart()//меняет виджет в главном окне на виджет самой игры
 {
-//    qDebug() << "start game";
     GameWidget* game = new GameWidget(this, mainwindow);
     mainwindow->setWidget(game);
 }
 
-void SignalRepeater::exitToMenu() const
+void AplicationManager::exitToMenu()//меняет виджет в главном окне на главное меню
 {
-//    qDebug() << "exit to menu";
     MainMenuWidget* mainMenu = new MainMenuWidget(this, mainwindow);
     mainwindow->setWidget(mainMenu);
 }
 
-void SignalRepeater::openLocalhostMenu()
+void AplicationManager::openLocalhostMenu()//меняет виджет в главном окне на меню подключения
 {
-//    qDebug() << "open local host menu";
     LocalHostWidget* localHost = new LocalHostWidget(this, mainwindow);
     mainwindow->setWidget(localHost);
 }
 
 
-void SignalRepeater::aplicationClose() const
+void AplicationManager::aplicationClose()//закрывает приложение
 {
-    qDebug() << "aplication close";
     mainwindow->close();
 }
 
-ServerManager* SignalRepeater::getServerManager()
+ServerManager* AplicationManager::getServerManager()//предоставляет объект ServerMangaer
 {
     return serverManager;
 }
 
-
-
-//void SignalRepeater::setServerManager(const ServerManager* sm)
-//{
-
-//}

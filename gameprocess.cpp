@@ -38,7 +38,7 @@ void GameProcess::setServerChoice(int choice)
 
 void GameProcess::setClientChoice(int choice)
 {
-//    qDebug() << "client player choice" << choice;
+    //    qDebug() << "client player choice" << choice;
     if(0 <= choice && choice <= 2)
     {
         clientPlayerChoice = choice;

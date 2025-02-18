@@ -40,7 +40,7 @@ void ServerManager::closeServer()
     }
 }
 
-void ServerManager::createConnection()
+void ServerManager::createConnection(const QString &host, quint16 port)
 {
     if(!client)
     {
@@ -50,7 +50,7 @@ void ServerManager::createConnection()
         connect(client, Client::serverChoiceIsAccepted, this, ServerManager::serverChoiceIsAccepted);
         connect(client, Client::serverSendResult, this, ServerManager::resultIsAccepted);
 
-        client->connectToServer("127.0.0.1", 1234);
+        client->connectToServer(host, port);
     }
 }
 

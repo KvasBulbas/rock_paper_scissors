@@ -18,7 +18,7 @@ public slots:
     void createServer();
     void closeServer();
 
-    void createConnection();
+    void createConnection(const QString &host, quint16 port);
     void closeConnection();
     void sendMessage(QString message);
 //    void sendResult(QString result);

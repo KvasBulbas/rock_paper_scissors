@@ -11,13 +11,13 @@
 #include "signalrepeater.h"
 #include "gameprocess.h"
 
-class SignalRepeater;
+class AplicationManager;
 
 class GameWidget : public QWidget
 {
     Q_OBJECT
 public:
-    GameWidget(SignalRepeater* sr,QWidget *parent = nullptr);
+    GameWidget(AplicationManager* sr,QWidget *parent = nullptr);
     ~GameWidget();
 
 public slots:
