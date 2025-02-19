@@ -10,6 +10,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    aplicationmanager.cpp \
     game_widget.cpp \
     gameclient.cpp \
     gameprocess.cpp \
@@ -18,10 +19,10 @@ SOURCES += \
     main.cpp \
     mainmenu_widget.cpp \
     mainwindow_widget.cpp \
-    servermanager.cpp \
-    signalrepeater.cpp
+    servermanager.cpp
 
 HEADERS += \
+    aplicationmanager.h \
     game_widget.h \
     gameclient.h \
     gameprocess.h \
@@ -29,8 +30,7 @@ HEADERS += \
     localhost_widget.h \
     mainmenu_widget.h \
     mainwindow_widget.h \
-    servermanager.h \
-    signalrepeater.h
+    servermanager.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

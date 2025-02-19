@@ -1,4 +1,4 @@
-#include "signalrepeater.h"
+#include "aplicationmanager.h"
 #include <QDebug>
 
 AplicationManager::AplicationManager(MainWindowWidget *mainwindow):mainwindow(mainwindow){

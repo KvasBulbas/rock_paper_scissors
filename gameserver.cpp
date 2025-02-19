@@ -1,17 +1,44 @@
 #include "gameserver.h"
 #include <QCoreApplication>
+#include <QNetworkInterface>
 
 Server::Server(QObject *parent) : QTcpServer(parent)
-    {
-        connect(this, &QTcpServer::newConnection, this, &Server::onNewConnection);
-//        this->setSocketOption(QAbstractSocket::LowDelayOption, 1);
+{
+    connect(this, &QTcpServer::newConnection, this, &Server::onNewConnection);
+}
 
-    }
-
-void Server::startServer(quint16 port) {
+void Server::startServer(quint16 port)
+{
     if (listen(QHostAddress::Any, port))
     {
-        qDebug() << "Start server" << port;
+        QString stringPort = QString::number(this->serverPort());
+
+        QList<QHostAddress> ipAddresses;
+        const QList<QNetworkInterface> interfaces = QNetworkInterface::allInterfaces();
+
+        for (const QNetworkInterface &interface : interfaces)
+        {
+            if (!(interface.flags() & QNetworkInterface::IsUp) ||
+                !(interface.flags() & QNetworkInterface::IsRunning)) {
+                continue;
+            }
+
+            const QList<QNetworkAddressEntry> entries = interface.addressEntries();
+            for (const QNetworkAddressEntry &entry : entries) {
+                QHostAddress ip = entry.ip();
+
+                if (ip.protocol() == QAbstractSocket::IPv4Protocol &&
+                    ip != QHostAddress::LocalHost) {
+                    ipAddresses.append(ip);
+                }
+            }
+        }
+
+        QString stringAdresses;
+        for(const QHostAddress &address : ipAddresses)
+            stringAdresses +=  address.toString() + ", ";
+
+        emit serverCreated(stringAdresses,stringPort);
     }
     else
     {
@@ -23,7 +50,6 @@ void Server::sendMessageToClient(const QString &message)
 {
     if (clientSocket && clientSocket->state() == QAbstractSocket::ConnectedState)
     {
-//        qDebug() << "server send message: " << message;
         clientSocket->write(message.toUtf8());
         clientSocket->flush();
         QCoreApplication::processEvents();
@@ -32,15 +58,14 @@ void Server::sendMessageToClient(const QString &message)
 
 
 
-void Server::onNewConnection() {
+void Server::onNewConnection()
+{
     clientSocket = nextPendingConnection();
-    //        clients.push_back(clientSocket);
     qDebug() << "New connection:" << clientSocket->peerAddress().toString();
 
     connect(clientSocket, &QTcpSocket::readyRead, [this]()
             {
                 QByteArray data = clientSocket->readAll();
-//                qDebug() << data;
                 if(data.startsWith("game:"))
                 {
                     int clientChoice = data.mid(5).toInt();
@@ -51,8 +76,7 @@ void Server::onNewConnection() {
 
     connect(clientSocket, &QTcpSocket::disconnected, [this]()
             {
-                qDebug() << "Client disconnect:"; /*<< clientSocket->peerAddress().toString();
-                                                               clientSocket->deleteLater();*/
+                qDebug() << "Client disconnect:";
                 emit clientDisconnect();
             }
             );

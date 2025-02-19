@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QVBoxLayout>
 
-#include "signalrepeater.h"
+#include "aplicationmanager.h"
 
 class AplicationManager;
 

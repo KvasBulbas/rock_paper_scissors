@@ -33,6 +33,7 @@ signals:
     void serverChoiceIsAccepted(int serverChoice);
     void localChoiceIsAccepted(int localChoice);
     void resultIsAccepted(int result);
+    void serverCreated(const QString& serverAdresses, const QString& portAdress);
 
 private:
     Server* server = nullptr;

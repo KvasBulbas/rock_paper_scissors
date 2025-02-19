@@ -8,7 +8,7 @@
 #include <QLabel>
 #include <QStackedWidget>
 
-#include "signalrepeater.h"
+#include "aplicationmanager.h"
 #include "gameprocess.h"
 
 class AplicationManager;

@@ -2,22 +2,22 @@
 
 GameProcess::GameProcess(ServerManager* serverManager)
 {
-    connect(this, GameProcess::stoneChoosing, serverManager, [serverManager](){
+    connect(this, &GameProcess::stoneChoosing, serverManager, [serverManager](){
         serverManager->sendMessage("game:0");
     });
 
-    connect(this, GameProcess::scissorsChoosing, serverManager, [serverManager](){
+    connect(this, &GameProcess::scissorsChoosing, serverManager, [serverManager](){
         serverManager->sendMessage("game:1");
     });
 
-    connect(this, GameProcess::paperChoosing, serverManager, [serverManager](){
+    connect(this, &GameProcess::paperChoosing, serverManager, [serverManager](){
         serverManager->sendMessage("game:2");
     });
 
 
-    connect(this, GameProcess::resultReady, serverManager, ServerManager::sendMessage);
-    connect(serverManager, ServerManager::localChoiceIsAccepted, this, setServerChoice);
-    connect(serverManager, ServerManager::clientChoiceIsAccepted, this, setClientChoice);
+    connect(this, &GameProcess::resultReady, serverManager, &ServerManager::sendMessage);
+    connect(serverManager, &ServerManager::localChoiceIsAccepted, this, &GameProcess::setServerChoice);
+    connect(serverManager, &ServerManager::clientChoiceIsAccepted, this, &GameProcess::setClientChoice);
 
 
 
@@ -128,30 +128,5 @@ void GameProcess::game()
 
     }
 
-
-
-//        switch (firstPlayerChoice - secondPlayerChoice) {
-//        case win_first:
-//        qDebug() << "first won";
-//        break;
-//        case win_second:
-//        qDebug() << "second won";
-//        break;
-//        case draw:
-//        qDebug() << "draw";
-//        }
 }
-//void GameProcess::stoneChoosing()
-//{
 
-//}
-
-//void GameProcess::scissorsChoosing()
-//{
-
-//}
-
-//void GameProcess::paperChoosing()
-//{
-
-//}

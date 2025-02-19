@@ -1,7 +1,7 @@
 #ifndef MAINMENU_WIDGET_H
 #define MAINMENU_WIDGET_H
 
-#include "signalrepeater.h"
+#include "aplicationmanager.h"
 
 #include <QDebug>
 

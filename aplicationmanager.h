@@ -1,5 +1,5 @@
-#ifndef SIGNALREPEATER_H
-#define SIGNALREPEATER_H
+#ifndef APLICATIONMANAGER_H
+#define APLICATIONMANAGER_H
 
 #include "mainwindow_widget.h"
 #include "servermanager.h"
@@ -38,4 +38,4 @@ private:
     ServerManager* serverManager = nullptr;
 };
 
-#endif // SIGNALREPEATER_H
+#endif // APLICATIONMANAGER_H

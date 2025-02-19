@@ -40,8 +40,10 @@ void AdressLineEdit::enterServerName()
 
 LocalHostWidget::LocalHostWidget(AplicationManager *aplicationManager, QWidget *parent): QWidget(parent)
 {
+    this->setFixedWidth(450);
+
     createLobbyButton = new QPushButton("Создать лобби",this);
-    createLobbyMesage = new QLabel("Сервер создан, ожидание другого игрока");
+    createLobbyMesage = new QTextEdit(this);
 
     connectButton = new QPushButton("Подключиться напрямую",this);
     adressLineEdit = new AdressLineEdit(aplicationManager, this);
@@ -49,7 +51,7 @@ LocalHostWidget::LocalHostWidget(AplicationManager *aplicationManager, QWidget *
 
     exitToMenuButton = new QPushButton("Выйти в главное меню",this);
 
-    QVBoxLayout* vbox = new QVBoxLayout();
+    QVBoxLayout* vbox = new QVBoxLayout(this);
     vbox->addWidget(createLobbyButton);
     vbox->addWidget(createLobbyMesage);
     vbox->addWidget(connectButton);
@@ -59,20 +61,19 @@ LocalHostWidget::LocalHostWidget(AplicationManager *aplicationManager, QWidget *
 
     createLobbyMesage->hide();
     connectionMesage->hide();
-    adressLineEdit->hide();
 
-    QHBoxLayout* hbox = new QHBoxLayout(this);
-    hbox->addLayout(vbox);
 
     serverManager = aplicationManager->getServerManager();
-    connect(serverManager, ServerManager::connectionIsOk, aplicationManager, AplicationManager::gameStart);
+    connect(serverManager, &ServerManager::connectionIsOk, aplicationManager, &AplicationManager::gameStart);
 
-    connect(exitToMenuButton, QPushButton::clicked, aplicationManager, AplicationManager::exitToMenu);
-    connect(createLobbyButton, QPushButton::clicked, this, LocalHostWidget::createLobby);
-    connect(connectButton , QPushButton::clicked, this, LocalHostWidget::showAdressLineEdit);
+    connect(exitToMenuButton, &QPushButton::clicked, this, &LocalHostWidget::baseStateReturn);
+    connect(this, &LocalHostWidget::escPressed, this, &LocalHostWidget::baseStateReturn);
 
-    connect(exitToMenuButton, QPushButton::clicked, this, LocalHostWidget::baseStateReturn);
-    connect(this, LocalHostWidget::escPressed, this, LocalHostWidget::baseStateReturn);
+    connect(exitToMenuButton, &QPushButton::clicked, aplicationManager, &AplicationManager::exitToMenu);
+    connect(createLobbyButton, &QPushButton::clicked, this, &LocalHostWidget::createLobby);
+    connect(connectButton , &QPushButton::clicked, this, &LocalHostWidget::clientConnect);
+
+    connect(serverManager, &ServerManager::serverCreated, this, &LocalHostWidget::showCreatedMessage);
 
 }
 
@@ -83,17 +84,15 @@ void LocalHostWidget::createLobby()
     connectButton->setEnabled(false);
 }
 
-void LocalHostWidget::showAdressLineEdit()
+void LocalHostWidget::showCreatedMessage(const QString& serverAdresses, const QString& port)
 {
-    createLobbyButton->setEnabled(false);
-
-    adressLineEdit->show();
-    connect(this, LocalHostWidget::enterPressed, this, LocalHostWidget::clientConnect);
+    createLobbyMesage->setText("К серверу можно подключиться по адресам: " + serverAdresses + "с портом: " +
+    port + ", ожидание подключения");
 }
+
 
 void LocalHostWidget::clientConnect()
 {
-    disconnect(this, LocalHostWidget::enterPressed, this, LocalHostWidget::clientConnect);
     connectButton->setEnabled(false);
     adressLineEdit->enterServerName();
     adressLineEdit->hide();
@@ -110,8 +109,7 @@ void LocalHostWidget::baseStateReturn()
     connectionMesage->hide();
     serverManager->closeServer();
     serverManager->closeConnection();
-    adressLineEdit->hide();
-    disconnect(this, LocalHostWidget::enterPressed, this, LocalHostWidget::clientConnect);
+    adressLineEdit->show();
 }
 
 LocalHostWidget::~LocalHostWidget()

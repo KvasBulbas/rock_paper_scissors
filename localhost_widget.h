@@ -1,7 +1,7 @@
 #ifndef LOCALHOSTWIDGET_H
 #define LOCALHOSTWIDGET_H
 
-#include "signalrepeater.h"
+#include "aplicationmanager.h"
 //#include "gameclient.h"
 
 #include <QWidget>
@@ -10,6 +10,7 @@
 #include <QTcpSocket>
 #include <QKeyEvent>
 #include <QLineEdit>
+#include <QTextEdit>
 
 
 class AplicationManager;
@@ -42,22 +43,18 @@ public:
 
 signals:
     void escPressed();
-     void enterPressed();
 
 public slots:
     void createLobby();
-    void showAdressLineEdit();
     void baseStateReturn();
     void clientConnect();
+    void showCreatedMessage(const QString& serverAdresses, const QString& port);
 
 protected:
     void keyPressEvent(QKeyEvent *event) override
     {
         if (event->key() == Qt::Key_Escape)
             emit escPressed();
-
-        if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
-            emit enterPressed();
     }
 
 private:
@@ -66,7 +63,7 @@ private:
     QPushButton* connectButton = nullptr;
     QPushButton* exitToMenuButton = nullptr;
 
-    QLabel* createLobbyMesage = nullptr;
+    QTextEdit* createLobbyMesage = nullptr;
     QLabel* connectionMesage = nullptr;
 
     AdressLineEdit* adressLineEdit = nullptr;

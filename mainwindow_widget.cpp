@@ -5,8 +5,11 @@
 MainWindowWidget::MainWindowWidget(QWidget *parent)
     : QWidget(parent)
 {
+    this->setMinimumSize(450, 250);
+
     aplicationManager = new AplicationManager(this);
     layout = new QVBoxLayout(this);
+    layout->setAlignment(Qt::AlignCenter);
 
     aplicationManager->exitToMenu();//задаем изначальное окно ввиде окна главного меню
 }

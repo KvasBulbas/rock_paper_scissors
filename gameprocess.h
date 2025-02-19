@@ -41,10 +41,6 @@ private:
 
     int serverPlayerChoice = none;
     int clientPlayerChoice = none;
-    int serverScore;
-    int clientScore;
-
-
 };
 
 #endif // GAMEPROCESS_H
