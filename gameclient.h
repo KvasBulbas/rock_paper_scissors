@@ -3,7 +3,7 @@
 
 #include <QTcpSocket>
 
-class Client : public QObject {
+class Client : public QTcpSocket {
     Q_OBJECT
 
 public:
@@ -30,8 +30,6 @@ private slots:
 
     void onDisconnected();
 
-private:
-    QTcpSocket socket;
 };
 
 
@@ -39,7 +37,7 @@ private:
 //    Q_OBJECT
 
 //public:
-//    Client();
+//    Client(QObject *parent = nullptr);
 //    void connectToServer(const QString &host, quint16 port);
 
 //    void disconnectFromServer();

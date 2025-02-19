@@ -15,6 +15,7 @@
 
 class AplicationManager;
 
+//класс виджета для ввода адреса, по которому хотим подключиться
 class AdressLineEdit : public QWidget
 {
     Q_OBJECT
@@ -33,7 +34,7 @@ private:
 };
 
 
-
+//класс виджета меню подключения. Через него можно создать сервер и подключиться к нему
 class LocalHostWidget : public QWidget
 {
     Q_OBJECT
@@ -42,16 +43,16 @@ public:
     ~LocalHostWidget();
 
 signals:
-    void escPressed();
+    void escPressed();//сигнал срабатывающий при нажатии на esc
 
 public slots:
     void createLobby();
     void baseStateReturn();
     void clientConnect();
-    void showCreatedMessage(const QString& serverAdresses, const QString& port);
+    void editCreatedMessage(const QString& serverAdresses, const QString& port);
 
 protected:
-    void keyPressEvent(QKeyEvent *event) override
+    void keyPressEvent(QKeyEvent *event) override//метод считывания нажатия на esc
     {
         if (event->key() == Qt::Key_Escape)
             emit escPressed();

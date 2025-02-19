@@ -1,15 +1,11 @@
 #ifndef GAMESERVER_H
 #define GAMESERVER_H
 
-//#include "signalrepeater.h"
-
 #include <QCoreApplication>
 #include <QTcpServer>
 #include <QTcpSocket>
-#include <QDebug>
 
-
-// Сервер
+// Класс сервера
 class Server : public QTcpServer {
     Q_OBJECT
 
@@ -20,10 +16,10 @@ public:
     void sendMessageToClient(const QString &message);
 
 signals:
-    void serverCreated(const QString &adressesMessage, const QString &portMessage);
-    void clientDisconnect();
-    void serverIsReady();
-    void clientChoiceIsAccepted(int clientChoice);
+    void serverCreated(const QString &adressesMessage, const QString &portMessage);//сервер был создан
+    void clientDisconnect();//клиент откобчился
+    void serverIsReady();//к серверу подключился клиент
+    void clientChoiceIsAccepted(int clientChoice);//клиент сделал выбор и прислал его
 
 private slots:
     void onNewConnection();
