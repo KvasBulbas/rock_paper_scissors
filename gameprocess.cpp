@@ -2,6 +2,7 @@
 
 GameProcess::GameProcess(ServerManager* serverManager)
 {
+    //при выборе соответвущего действия игрока, отпрввляем его ввиде сообщения через serverManager
     connect(this, &GameProcess::stoneChoosing, serverManager, [serverManager](){
         serverManager->sendMessage("game:0");
     });
@@ -15,118 +16,64 @@ GameProcess::GameProcess(ServerManager* serverManager)
     });
 
 
+    //когда результат готов, отарвляем его ввиде ссообщения чеоез servermanager
     connect(this, &GameProcess::resultReady, serverManager, &ServerManager::sendMessage);
+
+    //вызываем методы смены выобора сервера и клиента, когда приходит оповещение с их выбором
     connect(serverManager, &ServerManager::localChoiceIsAccepted, this, &GameProcess::setServerChoice);
     connect(serverManager, &ServerManager::clientChoiceIsAccepted, this, &GameProcess::setClientChoice);
-
-
-
-
-
 }
 
 
-void GameProcess::setServerChoice(int choice)
+void GameProcess::setServerChoice(int choice)//смена выбора сервера
 {
-//    qDebug() << "server player choice" << choice;
-    if(0 <= choice && choice <= 2)
+    if(0 <= choice && choice <= 2)//если выбор пришел корректно
     {
         serverPlayerChoice = choice;
-        game();
+        game();//вывзываем метод обработки игрового процесса
     }
 }
 
-void GameProcess::setClientChoice(int choice)
+void GameProcess::setClientChoice(int choice)//смена выобра клиента
 {
-    //    qDebug() << "client player choice" << choice;
-    if(0 <= choice && choice <= 2)
+    if(0 <= choice && choice <= 2)//при выбор пришел корректно
     {
         clientPlayerChoice = choice;
-        game();
+        game();//вывзываем метод обработки игрового процесса
     }
 }
 
 void GameProcess::game()
 {
+    int result = 0;//обнуляем результат прошлой партии
 
-    int result = 0;
-
+    //если игроки сделали выбор
     if(serverPlayerChoice != none && clientPlayerChoice != none )
     {
-//        qDebug() << serverPlayerChoice;
-//        qDebug() << clientPlayerChoice;
-
-        if(serverPlayerChoice == stone && clientPlayerChoice == scissors )
-        {
-            result = server_win;
-//            qDebug() <<  "server win";
-        }
-
-
-        if(serverPlayerChoice == stone && clientPlayerChoice == paper )
-        {
-            result = client_win;
-//            qDebug() <<  "client win";
-        }
-
-
-        if(serverPlayerChoice == stone && clientPlayerChoice == stone )
+        if(serverPlayerChoice == clientPlayerChoice)//если выборы одинаковые, то ничья
         {
             result = draw;
-//            qDebug() <<  "draw";
-
         }
-
-        if(serverPlayerChoice == scissors && clientPlayerChoice == scissors )
+        else
         {
-            result = draw;
-//            qDebug() <<  "draw";
+            //перечисляем все случае выигрыша сервера
+            if((serverPlayerChoice == stone && clientPlayerChoice == scissors) ||
+               (serverPlayerChoice == scissors && clientPlayerChoice == paper) ||
+               (serverPlayerChoice == paper && clientPlayerChoice == stone))
+            {
+                result = server_win;
+            }
+            else//иначе выиграл клиент
+            {
+                result = client_win;
+            }
         }
 
-
-        if(serverPlayerChoice == scissors && clientPlayerChoice == stone )
-        {
-            result = client_win;
-//            qDebug() <<  "client win";
-        }
-
-
-        if(serverPlayerChoice == scissors && clientPlayerChoice == paper )
-        {
-            result = server_win;
-//            qDebug() <<  "server win";
-        }
-
-
-        if(serverPlayerChoice == paper && clientPlayerChoice == paper )
-        {
-            result = draw;
-//            qDebug() <<  "draw";
-        }
-
-
-        if(serverPlayerChoice == paper && clientPlayerChoice == stone )
-        {
-            result = server_win;
-//            qDebug() <<  "server win";
-        }
-
-        if(serverPlayerChoice == paper && clientPlayerChoice == scissors )
-        {
-            result = client_win;
-//            qDebug() <<  "client win";
-        }
-
-
+        //обнуляем выборы игроков для следующей партии
         serverPlayerChoice = none;
         clientPlayerChoice = none;
 
-//        qDebug() << "game result: " << result;
-
-
-        emit resultReady(QString("result:") + QString::number(result));
-
+        emit resultReady(QString("result:") + QString::number(result));//отправляем сигналом резултат ввиде сообщения
     }
-
 }
 

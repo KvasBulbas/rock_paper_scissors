@@ -4,17 +4,17 @@
 
 Client::Client()
 {
-    connect(this, &QTcpSocket::connected, this, &Client::onConnected);
-    connect(this, &QTcpSocket::readyRead, this, &Client::onReadyRead);
-    connect(this, &QTcpSocket::disconnected, this, &Client::onDisconnected);
+    connect(this, &QTcpSocket::connected, this, &Client::onConnected);//при подключении клмента вызывается метод
+    connect(this, &QTcpSocket::readyRead, this, &Client::onReadyRead);//при чтении данных вызывается метод
+    connect(this, &QTcpSocket::disconnected, this, &Client::onDisconnected);//при закрытии сервера вызывается метод
 }
 
-void Client::connectToServer(const QString &host, quint16 port)
+void Client::connectToServer(const QString &host, quint16 port)//метод подключения клмента к серверу
 {
     this->connectToHost(host, port);
 }
 
-void Client::disconnectFromServer()
+void Client::disconnectFromServer()//метод отключения клинта от сервера
 {
     if(this->state() == QAbstractSocket::ConnectedState)
     {
@@ -24,9 +24,9 @@ void Client::disconnectFromServer()
     }
 }
 
-void Client::sendMessage(const QString &message)
+void Client::sendMessage(const QString &message)//метод отправки ссообщения серверу
 {
-    if (this->state() == QAbstractSocket::ConnectedState)
+    if (this->state() == QAbstractSocket::ConnectedState)//если подключение в норме, то отправляем сообщеение
     {
         this->write(message.toUtf8());
         this->flush();
@@ -39,27 +39,27 @@ void Client::sendMessage(const QString &message)
 
 
 
-void Client::onConnected()
+void Client::onConnected()//метод срабатывающий при подключении клиента к серверу
 {
-    emit clientIsReady();
+    emit clientIsReady();//оповещаем о том, что подключение прошло успешно
     qDebug() << "Connection sucsessful";
 }
 
-void Client::onReadyRead()
+void Client::onReadyRead()//метод срабатывающий при чтении данных от сервера
 {
-    QByteArray data = this->readAll();
+    QByteArray data = this->readAll();//достаем данные
 
-    if(data.startsWith("game:"))
+    if(data.startsWith("game:"))//если сообщение пришло об игре
     {
         int serverChoice = data.mid(5).toInt();
-        emit serverChoiceIsAccepted(serverChoice);
+        emit serverChoiceIsAccepted(serverChoice);//оповещаем, что сервер сделал выбор и ждет выбора клмента
     }
 
-    if(data.startsWith("result:"))
+    if(data.startsWith("result:"))//если пришел результат
     {
         int result = data.mid(7).toInt();
 
-        switch (result) {
+        switch (result) {//если сервер оповещает, что он выиграл, то полкчается клмиент проиграл, и наоборот, поэтому меняем результат для клиента
         case 0:
             result = 2;
             break;
@@ -67,11 +67,11 @@ void Client::onReadyRead()
             result = 0;
         }
 
-        emit serverSendResult(result);
+        emit serverSendResult(result);//оповещаем о том, то клмент отправил результат
     }
 }
 
-void Client::onDisconnected()
+void Client::onDisconnected()//метод срабатывающий при закрытии сервера
 {
     qDebug() << "Server close";
     emit serverCloseForClient();

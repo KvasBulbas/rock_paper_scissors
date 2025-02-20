@@ -4,17 +4,11 @@
 #include "QVBoxLayout"
 #include <QRandomGenerator>
 #include <QTimer>
-//void function bot()
-//{
-//    int randomNumber = QRandomGenerator::global()->bounded(2);
-//}
 
 GameWidget::GameWidget(AplicationManager* aplicationManager,QWidget *parent)
     : QWidget(parent)
 {
-
     this->setFixedSize(300,100);
-
 
     rockButton = new QPushButton("Камень",this);
     scissorsButton = new QPushButton("Ножницы",this);
@@ -25,26 +19,20 @@ GameWidget::GameWidget(AplicationManager* aplicationManager,QWidget *parent)
     hbox->addWidget(scissorsButton);
     hbox->addWidget(paperButton);
 
-
     firstPlayerReady = new QLabel("Ждем ход противника", this);
     secondPlayerReady = new QLabel("Противник сделал ход", this);
 
     serverDiconnect = new QLabel("Хост отлключился", this);
     clientDisconnect = new QLabel("Противник отлючился, ждем повторого подключения", this);
 
-
     youLose = new QLabel("Вы проиграли");
     youWin = new QLabel("Вы выиграли");
     draw = new QLabel("Ничья");
-
-
 
     resultWidget = new QStackedWidget(this);
     resultWidget->addWidget(youLose);
     resultWidget->addWidget(draw);
     resultWidget->addWidget(youWin);
-
-
 
     exitToMenuButton = new QPushButton("Выйти в главное меню",this);
 
@@ -57,53 +45,56 @@ GameWidget::GameWidget(AplicationManager* aplicationManager,QWidget *parent)
     vbox->addLayout(hbox);
     vbox->addWidget(exitToMenuButton);
 
-    serverManager = aplicationManager->getServerManager();
+    serverManager = aplicationManager->getServerManager();//достаем servermanager
 
+    //при оповещении о том, что клиент отключился от сервера, вызываем соотвествеющий метод
     connect(serverManager, &ServerManager::clientDisconnectFromServer, this, &GameWidget::clientDisconnectMessage);
+    //при оповещении о том, что сервер закрылся, вызываем соотвествеющий метод
     connect(serverManager, &ServerManager::serverCloseForClient, this, &GameWidget::serverDisconnectMessage);
 
-
-
+    //при оповещении о том, что клмент сделал выбор, вызываем соотвествеющий метод
     connect(serverManager, &ServerManager::clientChoiceIsAccepted, this, &GameWidget::enemyWaitingMessage);
+    //при оповещении о том, что сервер сделал выбор, вызываем соотвествеющий метод
     connect(serverManager, &ServerManager::serverChoiceIsAccepted, this, &GameWidget::enemyWaitingMessage);
+    //при оповещении о том, что резултат пришел, вызываем соотвествеющий метод
     connect(serverManager, &ServerManager::resultIsAccepted, this, &GameWidget::setResult);
 
-
+    //подключаем кнопки отключения сервера или клмента при выходе из игры
     connect(exitToMenuButton,&QPushButton::clicked, serverManager, &ServerManager::closeServer);
     connect(exitToMenuButton,&QPushButton::clicked, serverManager, &ServerManager::closeConnection);
 
+    //создаем объект обработчика игры
     gameProcess =  new GameProcess(serverManager);
 
+    //при при нажатии кнопок ходов игрока, вызываеются соответсвющие методы в данном классе
     connect(rockButton, &QPushButton::clicked, this, &GameWidget::waitEnemyMessage);
     connect(scissorsButton, &QPushButton::clicked, this, &GameWidget::waitEnemyMessage);
     connect(paperButton, &QPushButton::clicked, this, &GameWidget::waitEnemyMessage);
 
-
+    //при при нажатии кнопок ходов игрока, вызываеются соответсвющие методы в классе gameprocess
     connect(rockButton, &QPushButton::clicked, gameProcess, &GameProcess::stoneChoosing);
     connect(scissorsButton, &QPushButton::clicked, gameProcess, &GameProcess::scissorsChoosing);
     connect(paperButton, &QPushButton::clicked, gameProcess, &GameProcess::paperChoosing);
 
+    connect(exitToMenuButton, &QPushButton::clicked, aplicationManager, &AplicationManager::exitToMenu);//подключаем кнопку выхода в главное меню
 
-
-
-
-    connect(exitToMenuButton, &QPushButton::clicked, aplicationManager, &AplicationManager::exitToMenu);
-
-    baseStateReturn();
+    baseStateReturn();//вызываем метод возвраащающий виджет в базовое состояние
 }
 
-void GameWidget::clientDisconnectMessage()
+void GameWidget::clientDisconnectMessage()//метод выводящий сообщение о том, что клмент отключился
 {
     baseStateReturn();
+    //отключаем кнопки для избежаний софтлока
     rockButton->setEnabled(false);
     scissorsButton->setEnabled(false);
     paperButton->setEnabled(false);
     clientDisconnect->show();
 }
 
-void GameWidget::serverDisconnectMessage()
+void GameWidget::serverDisconnectMessage()//метод выводящий сообщение о том, что клмент сервер
 {
     baseStateReturn();
+    //отключаем кнопки для избежаний софтлока
     rockButton->setEnabled(false);
     scissorsButton->setEnabled(false);
     paperButton->setEnabled(false);
@@ -111,22 +102,20 @@ void GameWidget::serverDisconnectMessage()
     serverDiconnect->show();
 }
 
-void GameWidget::waitEnemyMessage()
+void GameWidget::waitEnemyMessage()//метод выводящий сообщение о ожидании противника
 {
-    if(!reslutOk)
+    if(!reslutOk)//если резултат не пришел
         firstPlayerReady->show();
-//    qDebug() << "wait enemy";
 }
 
-void GameWidget::enemyWaitingMessage(int choice)
+void GameWidget::enemyWaitingMessage(int choice)//метод выводящий сообщение о том, что противкник сделал выбор
 {
     Q_UNUSED(choice);
-    if(!reslutOk)
+    if(!reslutOk)//если результат не пришел
         secondPlayerReady->show();
-//    qDebug() << "enemywait ";
 }
 
-void GameWidget::baseStateReturn()
+void GameWidget::baseStateReturn()//метод скрывающий все сообщения и отменящий все действия, возращающий виджет в изначальное состояние
 {
     firstPlayerReady->hide();
     secondPlayerReady->hide();
@@ -142,27 +131,25 @@ void GameWidget::baseStateReturn()
     reslutOk = false;
 }
 
-void GameWidget::setResult(int result)
+void GameWidget::setResult(int result)//метод смены и отображения резльутата в виджете
 {
-//    qDebug() << "set result ";
-
     baseStateReturn();
 
     reslutOk = true;
     resultWidget->setCurrentIndex(result);
     resultWidget->show();
 
-
+    //отключаем кнопки для избежаний софтлока
     rockButton->setEnabled(false);
     scissorsButton->setEnabled(false);
     paperButton->setEnabled(false);
     exitToMenuButton->setEnabled(false);
 
+    //выжидаем немного времени для того, чтобы игроки успели ознакомиться с резултатом игры, после чего возращаем виджет в базовое состояние
     QTimer::singleShot(1800, [this]() {
         baseStateReturn();
     });
 }
-
 
 GameWidget::~GameWidget()
 {

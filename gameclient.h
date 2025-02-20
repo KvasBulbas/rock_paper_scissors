@@ -3,6 +3,7 @@
 
 #include <QTcpSocket>
 
+//класс клиента, который подключается к серверу
 class Client : public QTcpSocket {
     Q_OBJECT
 
@@ -18,10 +19,10 @@ public:
 
 
 signals:
-    void clientIsReady();
-    void serverCloseForClient();
-    void serverChoiceIsAccepted(int clientChoice);
-    void serverSendResult(int result);
+    void clientIsReady();//клиент подключился к серверу и готов к игре
+    void serverCloseForClient();//сервер, к которому был подлкючен клиент, закрылся
+    void serverChoiceIsAccepted(int clientChoice);//сервер сделал выбор и отправил его клиенту
+    void serverSendResult(int result);//сервер отправил резултат игры клиенту
 
 private slots:
     void onConnected();

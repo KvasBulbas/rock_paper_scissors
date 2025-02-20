@@ -49,10 +49,10 @@ LocalHostWidget::LocalHostWidget(AplicationManager *aplicationManager, QWidget *
     this->setFixedWidth(450);
 
     //создание виджетов
-    createLobbyButton = new QPushButton("Создать лобби",this);
+    createLobbyButton = new QPushButton("Создать сервер",this);
     createLobbyMesage = new QTextEdit(this);
 
-    connectButton = new QPushButton("Подключиться напрямую",this);
+    connectButton = new QPushButton("Подключиться к серверу",this);
     adressLineEdit = new AdressLineEdit(aplicationManager, this);
     connectionMesage = new QLabel("Подключение");
 

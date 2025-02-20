@@ -7,6 +7,8 @@
 #include <servermanager.h>
 
 class ServerManager;
+
+//класс обработчка игрового процесса
 class GameProcess : public QObject
 {
     Q_OBJECT
@@ -14,10 +16,10 @@ public:
     GameProcess(ServerManager* serverManager);
 
 signals:
-    void stoneChoosing();
-    void scissorsChoosing();
-    void paperChoosing();
-    void resultReady(QString resultMessage);
+    void stoneChoosing();//оповезение о выборе каменя
+    void scissorsChoosing();//оповещение о выборе ножниц
+    void paperChoosing();//оповещение о выборе бумаги
+    void resultReady(QString resultMessage);//оповещение о том, что резултат игры готов
 
 public slots:
     void setServerChoice(int choice);
@@ -37,6 +39,8 @@ private:
         paper = 2,
     };
 
+
+    /*первый выиграл если*/
     void game();
 
     int serverPlayerChoice = none;

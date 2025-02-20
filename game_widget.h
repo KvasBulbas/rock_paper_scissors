@@ -1,8 +1,6 @@
 #ifndef GAME_WIDGET_H
 #define GAME_WIDGET_H
 
-#include <QDebug>
-
 #include <QWidget>
 #include <QPushButton>
 #include <QLabel>
@@ -13,6 +11,7 @@
 
 class AplicationManager;
 
+//класс виджета игры
 class GameWidget : public QWidget
 {
     Q_OBJECT
@@ -47,18 +46,13 @@ private:
 
     GameProcess* gameProcess = nullptr;
 
-
     QLabel* youWin = nullptr;
     QLabel* youLose = nullptr;
     QLabel* draw = nullptr;
 
     QStackedWidget* resultWidget = nullptr;
 
-
-    bool reslutOk = false;
-
-
-
+    bool reslutOk = false;//если результат пришел
 };
 
 #endif // GAME_WIDGET_H
