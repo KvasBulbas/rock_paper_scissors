@@ -1,5 +1,4 @@
 #include "aplicationmanager.h"
-#include <QDebug>
 
 AplicationManager::AplicationManager(MainWindowWidget *mainwindow):mainwindow(mainwindow){
 
@@ -13,6 +12,7 @@ AplicationManager::~AplicationManager()
 
 void AplicationManager::gameStart()//меняет виджет в главном окне на виджет самой игры
 {
+
     GameWidget* game = new GameWidget(this, mainwindow);
     mainwindow->setWidget(game);
 }

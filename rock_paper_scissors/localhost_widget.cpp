@@ -15,7 +15,6 @@ AdressLineEdit::AdressLineEdit(AplicationManager *aplicationManager, QWidget *pa
     hostLineEdit->setMaximumWidth(100);
     portLineEdit->setMaximumWidth(50);
 
-
     QHBoxLayout* hbox = new QHBoxLayout(this);
     hbox->setSpacing(0);
     hbox->setContentsMargins(0, 0, 0, 0);
@@ -46,7 +45,7 @@ void AdressLineEdit::enterServerName()
 
 LocalHostWidget::LocalHostWidget(AplicationManager *aplicationManager, QWidget *parent): QWidget(parent)
 {
-    this->setFixedWidth(450);
+    this->setFixedWidth(400);
 
     //создание виджетов
     createLobbyButton = new QPushButton("Создать сервер",this);
@@ -129,6 +128,5 @@ void LocalHostWidget::baseStateReturn()
 
 LocalHostWidget::~LocalHostWidget()
 {
-//    baseStateReturn();
-//    qDebug() <<  "localhost delete";
+
 }

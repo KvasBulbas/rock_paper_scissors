@@ -16,7 +16,7 @@ class GameWidget : public QWidget
 {
     Q_OBJECT
 public:
-    GameWidget(AplicationManager* sr,QWidget *parent = nullptr);
+    GameWidget(AplicationManager* sr, QWidget *parent = nullptr);
     ~GameWidget();
 
 public slots:
@@ -25,11 +25,11 @@ public slots:
     void waitEnemyMessage();
     void enemyWaitingMessage(int choice);
 
-    void baseStateReturn();
-
     void setResult(int result);
 
 private:
+    void baseStateReturn();
+
     QPushButton* exitToMenuButton = nullptr;
 
     QPushButton* rockButton = nullptr;

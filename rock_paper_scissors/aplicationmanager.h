@@ -21,6 +21,8 @@ public:
     AplicationManager(MainWindowWidget* mainwindow);
     ~AplicationManager();
 
+    ServerManager* getServerManager();
+
 public slots:
     void gameStart();
 
@@ -29,8 +31,6 @@ public slots:
     void aplicationClose();
 
     void openLocalhostMenu();
-
-    ServerManager* getServerManager();
 
 private:
     MainWindowWidget* mainwindow = nullptr;

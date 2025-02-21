@@ -8,7 +8,7 @@
 GameWidget::GameWidget(AplicationManager* aplicationManager,QWidget *parent)
     : QWidget(parent)
 {
-    this->setFixedSize(300,100);
+    this->setFixedSize(350,100);
 
     rockButton = new QPushButton("Камень",this);
     scissorsButton = new QPushButton("Ножницы",this);
@@ -47,16 +47,16 @@ GameWidget::GameWidget(AplicationManager* aplicationManager,QWidget *parent)
 
     serverManager = aplicationManager->getServerManager();//достаем servermanager
 
-    //при оповещении о том, что клиент отключился от сервера, вызываем соотвествеющий метод
+    //при оповещении о том, что клиент отключился от сервера, вызываем соотвествеющий метод, отображающий информацию на экран
     connect(serverManager, &ServerManager::clientDisconnectFromServer, this, &GameWidget::clientDisconnectMessage);
-    //при оповещении о том, что сервер закрылся, вызываем соотвествеющий метод
+    //при оповещении о том, что сервер закрылся, вызываем соотвествеющий метод, отображающий информацию на экран
     connect(serverManager, &ServerManager::serverCloseForClient, this, &GameWidget::serverDisconnectMessage);
 
-    //при оповещении о том, что клмент сделал выбор, вызываем соотвествеющий метод
+    //при оповещении о том, что клмент сделал выбор, вызываем соотвествеющий метод, отображающий информацию на экран
     connect(serverManager, &ServerManager::clientChoiceIsAccepted, this, &GameWidget::enemyWaitingMessage);
-    //при оповещении о том, что сервер сделал выбор, вызываем соотвествеющий метод
+    //при оповещении о том, что сервер сделал выбор, вызываем соотвествеющий метод, отображающий информацию на экран
     connect(serverManager, &ServerManager::serverChoiceIsAccepted, this, &GameWidget::enemyWaitingMessage);
-    //при оповещении о том, что резултат пришел, вызываем соотвествеющий метод
+    //при оповещении о том, что резултат пришел, вызываем соотвествеющий метод, отображающий результат игры
     connect(serverManager, &ServerManager::resultIsAccepted, this, &GameWidget::setResult);
 
     //подключаем кнопки отключения сервера или клмента при выходе из игры
@@ -66,12 +66,12 @@ GameWidget::GameWidget(AplicationManager* aplicationManager,QWidget *parent)
     //создаем объект обработчика игры
     gameProcess =  new GameProcess(serverManager);
 
-    //при при нажатии кнопок ходов игрока, вызываеются соответсвющие методы в данном классе
+    //при при нажатии кнопок ходов игрока, вызываеются соответсвющие методы в данном классе, отображающие информацию на экран
     connect(rockButton, &QPushButton::clicked, this, &GameWidget::waitEnemyMessage);
     connect(scissorsButton, &QPushButton::clicked, this, &GameWidget::waitEnemyMessage);
     connect(paperButton, &QPushButton::clicked, this, &GameWidget::waitEnemyMessage);
 
-    //при при нажатии кнопок ходов игрока, вызываеются соответсвющие методы в классе gameprocess
+    //при при нажатии кнопок ходов игрока, вызываеются соответсвющие сигналы в классе gameprocess
     connect(rockButton, &QPushButton::clicked, gameProcess, &GameProcess::stoneChoosing);
     connect(scissorsButton, &QPushButton::clicked, gameProcess, &GameProcess::scissorsChoosing);
     connect(paperButton, &QPushButton::clicked, gameProcess, &GameProcess::paperChoosing);
@@ -91,7 +91,7 @@ void GameWidget::clientDisconnectMessage()//метод выводящий соо
     clientDisconnect->show();
 }
 
-void GameWidget::serverDisconnectMessage()//метод выводящий сообщение о том, что клмент сервер
+void GameWidget::serverDisconnectMessage()//метод выводящий сообщение о том, что сервер закрылся
 {
     baseStateReturn();
     //отключаем кнопки для избежаний софтлока

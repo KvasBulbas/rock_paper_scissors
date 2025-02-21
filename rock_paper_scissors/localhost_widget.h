@@ -2,7 +2,6 @@
 #define LOCALHOSTWIDGET_H
 
 #include "aplicationmanager.h"
-//#include "gameclient.h"
 
 #include <QWidget>
 #include <QPushButton>
@@ -15,7 +14,7 @@
 
 class AplicationManager;
 
-//класс виджета для ввода адреса, по которому хотим подключиться
+//класс виджета поля ввода адреса, по которому хотим подключиться
 class AdressLineEdit : public QWidget
 {
     Q_OBJECT
@@ -47,18 +46,19 @@ signals:
 
 public slots:
     void createLobby();
-    void baseStateReturn();
     void clientConnect();
     void editCreatedMessage(const QString& serverAdresses, const QString& port);
 
-protected:
+private slots:
+    void baseStateReturn();
+
+private:
     void keyPressEvent(QKeyEvent *event) override//метод считывания нажатия на esc
     {
         if (event->key() == Qt::Key_Escape)
             emit escPressed();
     }
 
-private:
     QPushButton* createLobbyButton = nullptr;
     QPushButton* findLobbyButton = nullptr;
     QPushButton* connectButton = nullptr;

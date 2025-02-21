@@ -39,8 +39,6 @@ private:
         paper = 2,
     };
 
-
-    /*первый выиграл если*/
     void game();
 
     int serverPlayerChoice = none;
